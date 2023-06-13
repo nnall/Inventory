@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import CardList from "./cardlist";
+import carList from "./inventory.json";
+import ReactDOM from "react";
+import Searchbar from "./searchbar";
 
-function App() {
+export default function App() {
+  // loop over carList
+
+  carList.forEach((car, i) => {
+    car.id = i + 1;
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <>
+      <header>
+        <h1>Inventory Search</h1>
       </header>
-    </div>
+      <Searchbar />
+
+      <CardList />
+    </>
   );
 }
-
-export default App;
