@@ -1,41 +1,37 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const Searchbar = () => {
+import json from "./inventory.json";
+
+// console.log(json);
+
+const Searchbar = ({ setResults }) => {
   const [input, setInput] = useState("");
 
-  //   const fetchData = function (value) {
-  //     fetch("./inventory.JSON")
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         console.log(json);
-  //       });
-  //   .then((data) => console.log(data));
+  const fetchData = (value) => {
+    // if (!value) {
 
-  // fetch("./inventory.json").then((res) => {
+    // }
 
-  // //   if (!res.ok) {
-  // //     console.log("res was not okay");
-  // //   } else {
-  // //     console.log("res was okay");
-  // //     console.log(res.json());
-  // //   }
-  // });
+    // console.log(`fetch received ${value}`);
 
-  fetch("./inventory.json")
-    .then((response) => response.json())
-    .then((data) => {
-      // Process the JSON data
-      console.log(data);
-    })
-    .catch((error) => {
-      // Handle any errors
-      console.error(error);
+    const results = json.filter((car) => {
+      if (car.model.toLowerCase().includes(value.toLowerCase())) {
+        // matches.push(car);
+        // matches.push(car);
+        return car;
+        // setResults(results);
+      }
     });
+
+    setResults(results);
+
+    //   need to fetch inventory.json so that handleChange can search the json for the search results
+  };
 
   const handleChange = function (val) {
     setInput(val);
-    // fetchData(val);
+    fetchData(val);
   };
 
   return (
@@ -45,16 +41,15 @@ const Searchbar = () => {
         {/* storing input into 'value' each time a "change" is detected */}
         <input
           type="text"
-          placeholder="Type to search..."
+          placeholder="search models.."
           value={input}
           onChange={(e) => {
-            console.log(e.target.value);
             handleChange(e.target.value);
           }}
         />
       </div>
-      <div>Search Results</div>
     </div>
   );
 };
+
 export default Searchbar;

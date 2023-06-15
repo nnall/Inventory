@@ -1,15 +1,16 @@
 import React from "react";
-import carList from "./inventory.json";
+// import carList from "./inventory.json";
 import Card from "./card";
 
-export default function cardlist() {
-  console.log("cardList component activated");
+// import SearchResults from "./searchResults"
 
-  //   console.log(carList);
+export default function cardlist(data) {
+  data = data.results;
+  //   console.log(data);
 
   return (
     <section className="carList">
-      {carList.map((car) => {
+      {data.map((car) => {
         return <Card {...car} key={car.id}></Card>;
       })}
     </section>
