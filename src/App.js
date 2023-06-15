@@ -6,10 +6,14 @@ import ReactDOM from "react";
 import Searchbar from "./searchbar";
 import Checkbox from "./checkbox";
 import Header from "./header";
+import Combine from "./combine.js";
 
 export default function App() {
   return (
     // make a component for <Header> containing everything here.
-    <Header />
+    <>
+      <Header />
+      {/* <Combine /> */}
+    </>
   );
 }

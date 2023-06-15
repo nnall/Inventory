@@ -1,20 +1,19 @@
 import React, { Component } from "react";
+import { useState } from "react";
 
-export default class Checkbox extends Component {
-  render() {
-    const { id, title, name, handleChange, checked } = this.props;
+// Generates checkbox html from arrays
 
-    return (
-      <div>
-        <input
-          id={id}
-          type="checkbox"
-          name={name}
-          onChange={handleChange}
-          checked={checked}
-        />
-        <label htmlFor={id}>{title}</label>
-      </div>
-    );
-  }
-}
+const checkbox = (array) => {
+  const [filterResults, setFilter] = useState(carList);
+  console.log(array);
+
+  // receives array, outputs as checkbox
+
+  const checkboxArray = array.map((item) => {
+    React.createElement("input", { type: "checkbox" }, { item });
+  });
+
+  return <div></div>;
+};
+
+export default checkbox;

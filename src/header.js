@@ -5,6 +5,7 @@ import carList from "./inventory.json";
 import json from "./inventory.json";
 import Searchbar from "./searchbar";
 import Filter from "./filter.js";
+
 // import Checkbox from "./checkbox";
 
 const Header = () => {

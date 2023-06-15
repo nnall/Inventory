@@ -9,18 +9,14 @@ const Searchbar = ({ setResults }) => {
   const [input, setInput] = useState("");
 
   const fetchData = (value) => {
-    // if (!value) {
-
-    // }
-
-    // console.log(`fetch received ${value}`);
-
     const results = json.filter((car) => {
-      if (car.model.toLowerCase().includes(value.toLowerCase())) {
-        // matches.push(car);
-        // matches.push(car);
+      if (
+        car.model.toLowerCase().includes(value.toLowerCase()) ||
+        car.year.toLowerCase().includes(value.toLowerCase()) ||
+        car.make.toLowerCase().includes(value.toLowerCase()) ||
+        car.color.toLowerCase().includes(value.toLowerCase())
+      ) {
         return car;
-        // setResults(results);
       }
     });
 
@@ -41,7 +37,7 @@ const Searchbar = ({ setResults }) => {
         {/* storing input into 'value' each time a "change" is detected */}
         <input
           type="text"
-          placeholder="search models.."
+          placeholder="search year, make, model.. "
           value={input}
           onChange={(e) => {
             handleChange(e.target.value);
