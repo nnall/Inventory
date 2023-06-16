@@ -4,7 +4,7 @@ import CardList from "./cardlist";
 import carList from "./inventory.json";
 import ReactDOM from "react";
 import Searchbar from "./searchbar";
-import Checkbox from "./checkbox";
+import Checkbox from "./checkboxes";
 import Header from "./header";
 import Combine from "./combine.js";
 

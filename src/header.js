@@ -34,7 +34,7 @@ const Header = () => {
 
       <div className={`dropdown-menu ${menu ? "active" : "inactive"}`}>
         <Searchbar setResults={setResults} />
-        <Filter />
+        <Filter setResults={setResults} />
       </div>
 
       <CardList results={results} />

@@ -141,6 +141,19 @@ button:hover{
 }
 
 
+.filters-container{
+    border:1px solid green;
+    padding:2rem;
+    max-width:20rem;
+    height:30rem;
+}
+
+.filter-type{
+    display:flex;
+
+}
+
+
 
 
 
