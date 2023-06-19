@@ -1,111 +1,125 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import carList from "./inventory.json";
 import Checkbox from "./checkboxes";
 import json from "./inventory.json";
 import Input from "./input";
 import Checkboxes from "./checkboxes";
 
-let makeArray = carList.map((car) => car.make);
-makeArray = [...new Set(makeArray)].sort();
-
-let yearArray = carList.map((car) => car.year);
-yearArray = [...new Set(yearArray)].sort();
-
-let colorArray = carList.map((car) => car.color);
-colorArray = [...new Set(colorArray)].sort();
-
-// console.log(makeArray, yearArray, colorArray);
-
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
-  const [[input, setInput]] = useState([]);
+  const makeArray = [...new Set(carList.map((car) => car.make))].sort();
+  const yearArray = [...new Set(carList.map((car) => car.year))].sort();
+  const colorArray = [...new Set(carList.map((car) => car.color))].sort();
 
-  const fetchData = (value) => {
-    const results = json.filter((car) => {
-      if (car.make.toLowerCase().includes(value.toLowerCase())) {
-        return car;
-      }
-    });
+  const [selectedMakes, setSelectedMakes] = useState([]);
+  const [selectedYears, setSelectedYears] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
 
-    setResults(results);
+  const handleChange = (field, value) => {
+    if (field === "make") {
+      const updatedMakes = selectedMakes.includes(value)
+        ? selectedMakes.filter((make) => make !== value)
+        : [...selectedMakes, value];
+      setSelectedMakes(updatedMakes);
+    }
+    if (field === "year") {
+      const updatedYears = selectedYears.includes(value)
+        ? selectedYears.filter((year) => year !== value)
+        : [...selectedYears, value];
+      setSelectedYears(updatedYears);
+    }
+    if (field === "color") {
+      const updatedColors = selectedColors.includes(value)
+        ? selectedColors.filter((color) => color !== value)
+        : [...selectedColors, value];
+      setSelectedColors(updatedColors);
+    }
   };
 
-  //   need a way to pass what type of value it is.. so that we only search on the relevant fields.
+  useEffect(() => {
+    filterResults();
+  }, [selectedMakes, selectedYears, selectedColors]);
 
-  const handleChange = function (val) {
-    // console.log(val);
-    fetchData(val);
+  const filterResults = () => {
+    const results = carList.filter((car) => {
+      const makeMatch =
+        selectedMakes.length === 0 || selectedMakes.includes(car.make);
+      const yearMatch =
+        selectedYears.length === 0 || selectedYears.includes(car.year);
+      const colorMatch =
+        selectedColors.length === 0 || selectedColors.includes(car.color);
+      return makeMatch && yearMatch && colorMatch;
+    });
+    setResults(results);
   };
 
   return (
     <div className="filters-container">
       <div className="filter-type">
         <h4>Make</h4>
-        <div>
-          {makeArray.map((make) => (
-            <>
+        <div className="filters">
+          {makeArray.map((make, id) => (
+            <div key={make} className="checkboxes">
               <input
-                for={make}
+                id={make}
+                value={make}
                 type="checkbox"
+                // value={input}
                 onChange={(e) => {
-                  handleChange(make);
-                  console.log(e);
-                  //   console.log(`${make} was checked`);
+                  handleChange("make", e.target.value);
+
+                  console.log(e.target.value);
+                  console.log(`${make} was checked`);
                 }}
               ></input>
-              <label for={make}>{make}</label>
-            </>
+              <label htmlFor={make}>{make}</label>
+            </div>
           ))}
         </div>
       </div>
       <div className="filter-type">
         <h4>Year</h4>
-        <div>
-          {yearArray.map((year) => (
-            <>
+        <div className="filters">
+          {yearArray.map((year, id) => (
+            <div key={year} className="checkboxes">
               <input
-                for={year}
+                id={year}
+                value={year}
                 type="checkbox"
                 onChange={(e) => {
+                  handleChange("year", e.target.value);
                   //   console.log(e);
-                  //   console.log(`${year} was checked`);
+                  console.log(`${year} was checked`);
                 }}
               ></input>
-              <label for={year}>{year}</label>
-            </>
+              <label htmlFor={year}>{year}</label>
+            </div>
           ))}
         </div>
       </div>
       <div className="filter-type">
         <h4>Color</h4>
-        <div>
-          {colorArray.map((color) => (
-            <>
+        <div className="filters">
+          {colorArray.map((color, id) => (
+            <div key={color} className="checkboxes">
               <input
-                for={color}
+                id={color}
+                value={color}
                 type="checkbox"
                 onChange={(e) => {
+                  handleChange("color", e.target.value);
                   //   console.log(e);
-                  //   console.log(`${color} was checked`);
+                  console.log(`${color} was checked`);
                 }}
               ></input>
-              <label for={color}>{color}</label>
-            </>
+              <label htmlFor={color}>{color}</label>
+            </div>
           ))}
         </div>
       </div>
     </div>
   );
 };
-
-// const Filter(){
-
-//     return (
-//         <div className = "filters-container">
-
-//         </div>
-//     )
-// }
 
 export default Filter;

@@ -5,6 +5,7 @@ import carList from "./inventory.json";
 import json from "./inventory.json";
 import Searchbar from "./searchbar";
 import Filter from "./filter.js";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // import Checkbox from "./checkbox";
 
@@ -36,8 +37,6 @@ const Header = () => {
         <Searchbar setResults={setResults} />
         <Filter setResults={setResults} />
       </div>
-
-      <CardList results={results} />
     </>
   );
 };
