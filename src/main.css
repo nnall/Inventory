@@ -33,12 +33,13 @@ button:hover{
     background-color: beige;
     position:fixed;
     top:6rem;
-    right:2rem;
+    right:1rem;
     max-width:max-content;
-    /* height:50vh; */
+    height:60vh;
     display: flex;
     flex-direction:column;
     align-items: center;;
+    
 }
 
 .dropdown-menu.active{
@@ -100,7 +101,7 @@ button:hover{
     flex-direction:column;
     align-items:center;
     padding:1rem;
-}
+    text-decoration: none;}
 
 .card h3{
     text-align: center;
@@ -150,6 +151,7 @@ button:hover{
     /* padding:2rem; */
     max-width:20rem;
     /* height:30rem; */
+    overflow-y: scroll;
 }
 
 .filter-type{
@@ -159,7 +161,7 @@ button:hover{
 }
 
 .filter-type h4{
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
     text-align:center;
 }
@@ -172,6 +174,19 @@ button:hover{
 
 .filters input{
     margin-right: .5rem;
+}
+
+
+.range{
+    width:100%;
+    border: 1px solid blue;
+}
+.form-range{
+    width:100%
+}
+
+.range label{
+    font-size: 1.5em;
 }
 
 

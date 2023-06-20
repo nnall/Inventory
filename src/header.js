@@ -9,13 +9,15 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // import Checkbox from "./checkbox";
 
-const Header = () => {
-  const [results, setResults] = useState(carList);
+const Header = ({ setResults }) => {
+  //   const [results, setResults] = useState(carList);
   const [menu, setMenu] = useState(false);
 
   carList.forEach((car, i) => {
     car.id = i + 1;
   });
+
+  //   setResults(results);
 
   return (
     <>
