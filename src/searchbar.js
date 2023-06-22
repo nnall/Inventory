@@ -1,33 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
-import json from "./inventory.json";
-
-// console.log(json);
+// import carList from "./inventory.json";
 
 const Searchbar = ({ setResults }) => {
   const [input, setInput] = useState("");
 
-  const fetchData = (value) => {
-    const results = json.filter((car) => {
-      if (
-        car.model.toLowerCase().includes(value.toLowerCase()) ||
-        car.year.toLowerCase().includes(value.toLowerCase()) ||
-        car.make.toLowerCase().includes(value.toLowerCase()) ||
-        car.color.toLowerCase().includes(value.toLowerCase())
-      ) {
-        return car;
+  useEffect(() => {
+    fetchCarList(input);
+  }, [input]);
+
+  const fetchCarList = async (value) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/https://holmesmotors.com/api/inventory/feed?key=hs78ki34ERs"
+      );
+      if (response.ok) {
+        const carList = await response.json();
+        const results = carList.filter((car) => {
+          if (
+            car.model.toLowerCase().includes(value.toLowerCase()) ||
+            car.year.toLowerCase().includes(value.toLowerCase()) ||
+            car.make.toLowerCase().includes(value.toLowerCase()) ||
+            car.color.toLowerCase().includes(value.toLowerCase())
+          ) {
+            return car;
+          }
+        });
+        setResults(results);
+      } else {
+        console.error("Error fetching car data:", response.status);
+        setResults([]);
       }
-    });
-
-    setResults(results);
-
-    //   need to fetch inventory.json so that handleChange can search the json for the search results
+    } catch (error) {
+      console.error("Error fetching car data:", error);
+      setResults([]);
+    }
   };
+
+  // const fetchData = (value) => {
+  //   const results = carList.filter((car) => {
+  //     if (
+  //       car.model.toLowerCase().includes(value.toLowerCase()) ||
+  //       car.year.toLowerCase().includes(value.toLowerCase()) ||
+  //       car.make.toLowerCase().includes(value.toLowerCase()) ||
+  //       car.color.toLowerCase().includes(value.toLowerCase())
+  //     ) {
+  //       return car;
+  //     }
+  //   });
+
+  //   setResults(results);
+
+  //   //   need to fetch inventory.json so that handleChange can search the json for the search results
+  // };
 
   const handleChange = function (val) {
     setInput(val);
-    fetchData(val);
+    fetchCarList(val);
   };
 
   return (

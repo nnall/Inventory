@@ -103,6 +103,7 @@ button:hover{
     align-items: center;;
     color: var(--DarkText);
     font-weight:50;
+    overflow: visible;
     
 }
 
@@ -420,26 +421,34 @@ button:hover{
     margin-right: .5rem;
 }
 
+.clear-filters-button{
+    width:max-content;
+    border: 1px solid blue;
+    position:relative;
+    z-index: 2000;
+    
+}
+
 .clear-filters-button button{
     padding: 1rem;
-    position:relative;
-    z-index: 200;
     border-radius: 3rem;
     background-color: rgb(247, 245, 178);
     border: none;
     font-family: var(--fontFamily);
     font-size: 1.2em;
+    font-weight:800;
     color:red;
-    font-weight:400;
     transition: 200ms ease-out;
+
+    /* left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000; */
 }
 
-.clear-filters-button button:hover{
+.clear-filters-button:hover button{
     background-color: var(--DarkText);
-    /* position: absolute; */
     cursor:pointer;
-    z-index: 2000;
- 
     color: var(--LightestBG);
     transform: scale(1.1);
 }

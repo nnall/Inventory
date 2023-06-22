@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ReactDom from "react-dom";
+import placeholder from "./img/placeholder.jpg";
 
 // import
 
@@ -26,7 +27,7 @@ const Card = (props) => {
       <h3>{`${props.year} ${props.make}`}</h3>
       <h5>{`${props.model}`}</h5>
       {/* <p className="retail-tag">Retail: ${numberTrans(props.retailprice)}</p> */}
-      <img src={props.photo}></img>
+      <img src={props.photo ? props.photo : placeholder}></img>
 
       <div className="card-details">
         <p>Location: {locationTrans(props.location)}</p>

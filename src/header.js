@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { useState, useEffect } from "react";
+import React from "react";
+import { useState, useEffect, useRef } from "react";
 import CardList from "./cardlist";
 // import carList from "./inventory.json";
 import json from "./inventory.json";
@@ -13,6 +13,7 @@ const Header = ({ setResults }) => {
   const [menu, setMenu] = useState(false);
   const [menuButtonActive, setMenuButtonActive] = useState(false);
   const [carList, setCarList] = useState([]);
+  const dropdownRef = useRef(null);
 
   carList.forEach((car, i) => {
     car.id = i + 1;
@@ -20,6 +21,10 @@ const Header = ({ setResults }) => {
 
   useEffect(() => {
     fetchData();
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   const apiUrl =
@@ -37,7 +42,18 @@ const Header = ({ setResults }) => {
 
   const handleMenuClick = () => {
     setMenu((prevState) => !prevState);
-    setMenuButtonActive((prevState) => !prevState);
+    setMenuButtonActive(true);
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      !event.target.classList.contains("menu-btn") &&
+      !event.target.classList.contains("menu-trigger")
+    ) {
+      setMenu(false);
+    }
   };
 
   const menuButtonStyle = {
@@ -65,10 +81,21 @@ const Header = ({ setResults }) => {
         </div>
       </header>
 
-      <div className={`dropdown-menu ${menu ? "active" : "inactive"}`}>
+      <div
+        className={`dropdown-menu ${menu ? "active" : "inactive"}`}
+        ref={dropdownRef}
+      >
         <Searchbar setResults={setResults} />
         <Filter setResults={setResults} />
       </div>
+
+      {/* <div
+        className={`dropdown-menu ${menu ? "active" : "inactive"}`}
+        ref={dropdownRef}
+      >
+        <Searchbar setResults={setResults} />
+        <Filter setResults={setResults} />
+      </div> */}
     </>
   );
 };
