@@ -36,6 +36,7 @@ const Searchbar = ({ setResults }) => {
         <FaSearch id="search-icon" />
         {/* storing input into 'value' each time a "change" is detected */}
         <input
+          id="searchInput"
           type="text"
           placeholder="search year, make, model.. "
           value={input}

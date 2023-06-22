@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import carList from "./inventory.json";
+// import carList from "./inventory.json";
 import Checkbox from "./checkboxes";
 import json from "./inventory.json";
 import Input from "./input";
@@ -9,6 +9,30 @@ import { MDBRange } from "mdb-react-ui-kit";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
+  const [carList, setCarList] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/https://holmesmotors.com/api/inventory/feed?key=hs78ki34ERs"
+      );
+      const data = await response.json();
+
+      data.forEach((car, i) => {
+        car.id = i + 1;
+      });
+
+      setCarList(data);
+      setResults(data);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
+
   const makeArray = [...new Set(carList.map((car) => car.make))].sort();
   const yearArray = [...new Set(carList.map((car) => car.year))].sort();
   const colorArray = [...new Set(carList.map((car) => car.color))].sort();
@@ -42,6 +66,8 @@ const Filter = ({ setResults }) => {
 
   const { min, max } = setRange(downPaymentsArray);
 
+  const [rangeSliderChanged, setRangeSliderChanged] = useState(false);
+
   //   function changeCards(limit) {}
 
   const handleChange = (field, value) => {
@@ -74,14 +100,28 @@ const Filter = ({ setResults }) => {
     if (field === "requireddown") {
       //   console.log(`${value} is the current value`);
 
-      const updatedDownPayments = selectedDownPayments.includes(value)
-        ? selectedDownPayments.filter(
-            (requireddown) => Number(requireddown) <= value
-          )
-        : [...selectedDownPayments, value];
-      setSelectedDownPayments(updatedDownPayments);
+      setSelectedDownPayments(value);
+      setRangeSliderChanged(true);
+      //   const updatedDownPayments = selectedDownPayments.includes(value)
+      //     ? selectedDownPayments.filter(
+      //         (requireddown) => Number(requireddown) <= value
+      //       )
+      //     : [...selectedDownPayments, value];
+      //   setSelectedDownPayments(updatedDownPayments);
     }
   };
+
+  function locationTrans(location) {
+    if (location === "S01_Holmes1") {
+      return "Diberville";
+    } else if (location === "S05_Montgomery1") {
+      return "Montgomery";
+    } else if (location === "S07_Bham1") {
+      return "Birmingham";
+    } else if (location === "S09_Douglas1") {
+      return "Douglas";
+    }
+  }
 
   useEffect(() => {
     filterResults();
@@ -93,45 +133,112 @@ const Filter = ({ setResults }) => {
     selectedDownPayments,
   ]);
 
-  const filterResults = () => {
-    const results = carList.filter((car) => {
-      const makeMatch =
-        selectedMakes.length === 0 || selectedMakes.includes(car.make);
-      const yearMatch =
-        selectedYears.length === 0 || selectedYears.includes(car.year);
-      const colorMatch =
-        selectedColors.length === 0 || selectedColors.includes(car.color);
-      const locationMatch =
-        selectedLocations.length === 0 ||
-        selectedLocations.includes(car.location);
+  const clearFilters = () => {
+    // a function to uncheck all filters, clear searchbar, reset down payment
+    setSelectedMakes([]);
+    setSelectedYears([]);
+    setSelectedColors([]);
+    setSelectedLocations([]);
+    setSelectedDownPayments([]);
 
-      //   const downPaymentMatch =
-      //     selectedDownPayments.length === 0 ||
-      //     selectedDownPayments.includes(Number(car.requireddown));
-
-      //   const downPaymentMatch =
-      //     selectedDownPayments.length === 0 ||
-      //     selectedDownPayments.includes(Number(car.requireddown)) ||
-      //     (selectedDownPayments.length === 1 &&
-      //       Number(car.requireddown) <= selectedDownPayments[0]); // Updated condition
-
-      const downPaymentMatch =
-        selectedDownPayments.length === 0 ||
-        selectedDownPayments.some(
-          (downPayment) => Number(downPayment) >= Number(car.requireddown)
-        );
-      console.log(downPaymentMatch);
-
-      return (
-        makeMatch &&
-        yearMatch &&
-        colorMatch &&
-        locationMatch &&
-        downPaymentMatch
-      );
+    document.getElementById("searchInput").value = ""; // Assuming your search input has an id of "searchInput"
+    document.getElementById("customRange").value = max; // Assuming your range slider has an id of "customRange" and "max" is the maximum value
+    const checkboxes = document.querySelectorAll(".checkboxes input"); // Assuming your checkboxes have a common class of "checkboxes"
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
     });
+  };
+
+  //   const filterResults = () => {
+  //     let results = [...carList];
+
+  //     if (selectedMakes.length > 0) {
+  //       results = results.filter((car) => selectedMakes.includes(car.make));
+  //     }
+  //     if (selectedYears.length > 0) {
+  //       results = results.filter((car) => selectedYears.includes(car.year));
+  //     }
+  //     if (selectedColors.length > 0) {
+  //       results = results.filter((car) => selectedColors.includes(car.color));
+  //     }
+  //     if (selectedLocations.length > 0) {
+  //       results = results.filter((car) =>
+  //         selectedLocations.includes(car.location)
+  //       );
+  //     }
+  //     if (selectedDownPayments > 0) {
+  //       results = results.filter(
+  //         (car) => Number(car.requireddown) <= selectedDownPayments
+  //       );
+
+  //       //   const downPaymentMatch =
+  //       //     selectedDownPayments.length === 0 ||
+  //       //     selectedDownPayments.includes(Number(car.requireddown));
+
+  //       //   const downPaymentMatch =
+  //       //     selectedDownPayments.length === 0 ||
+  //       //     selectedDownPayments.includes(Number(car.requireddown)) ||
+  //       //     (selectedDownPayments.length === 1 &&
+  //       //       Number(car.requireddown) <= selectedDownPayments[0]); // Updated condition
+
+  //       //   const downPaymentMatch =
+  //       //     selectedDownPayments === 0 ||
+  //       //     Number(car.requireddown) <= selectedDownPayments;
+
+  //       //   console.log(downPaymentMatch);
+
+  //       //   console.log(downPaymentMatch);
+  //     }
+
+  //     // return (
+  //     //   makeMatch && yearMatch && colorMatch && locationMatch && downPaymentMatch
+  //     // );
+
+  //     // if (rangeSliderChanged) {
+  //     //   // Sort by requireddown only if range slider caused the filtering
+  //     //   results.sort((a, b) => a.requireddown - b.requireddown);
+  //     //   setRangeSliderChanged(false); // Reset the flag after sorting
+  //     // }
+
+  //     setResults(results);
+  //   };
+
+  const filterResults = () => {
+    let results = [...carList]; // Create a copy of the carList array
+
+    if (selectedMakes.length > 0) {
+      results = results.filter((car) => selectedMakes.includes(car.make));
+    }
+    if (selectedYears.length > 0) {
+      results = results.filter((car) => selectedYears.includes(car.year));
+    }
+    if (selectedColors.length > 0) {
+      results = results.filter((car) => selectedColors.includes(car.color));
+    }
+    if (selectedLocations.length > 0) {
+      results = results.filter((car) =>
+        selectedLocations.includes(car.location)
+      );
+    }
+    if (selectedDownPayments > 0) {
+      results = results.filter(
+        (car) => Number(car.requireddown) <= selectedDownPayments
+      );
+      results.sort((a, b) => a.requireddown - b.requireddown);
+    }
+
     setResults(results);
   };
+
+  useEffect(() => {
+    filterResults();
+  }, [
+    selectedMakes,
+    selectedYears,
+    selectedColors,
+    selectedLocations,
+    selectedDownPayments,
+  ]);
 
   return (
     <div className="filters-container">
@@ -147,9 +254,6 @@ const Filter = ({ setResults }) => {
                 // value={input}
                 onChange={(e) => {
                   handleChange("make", e.target.value);
-
-                  console.log(e.target.value);
-                  console.log(`${make} was checked`);
                 }}
               ></input>
               <label htmlFor={make}>{make}</label>
@@ -168,8 +272,6 @@ const Filter = ({ setResults }) => {
                 type="checkbox"
                 onChange={(e) => {
                   handleChange("year", e.target.value);
-                  //   console.log(e);
-                  console.log(`${year} was checked`);
                 }}
               ></input>
               <label htmlFor={year}>{year}</label>
@@ -200,8 +302,6 @@ const Filter = ({ setResults }) => {
 
       {/* DOWN PAYMENT MIN-MAX SLIDER */}
 
-      {/* need another functino up top for inputting the range minimum and maximum according to what the min and max of the downPaymentsArray are.  */}
-
       <div className="filter-type">
         <h4>Down Payment</h4>
         <MDBRange
@@ -209,13 +309,9 @@ const Filter = ({ setResults }) => {
           max={max}
           defaultValue={max}
           id="customRange"
-          label="Down Payment"
           onChange={(e) => {
             const limit = Number(e.target.value);
-            // console.log(limit);
-            // changeCards(limit)
             handleChange("requireddown", limit);
-            // send e.target.value to function , to return from inventory only those cars whose .requireddown field had a number e.target.value or less.
           }}
         />
       </div>
@@ -235,10 +331,13 @@ const Filter = ({ setResults }) => {
                   console.log(`${location} was checked`);
                 }}
               ></input>
-              <label htmlFor={location}>{location}</label>
+              <label htmlFor={location}>{locationTrans(location)}</label>
             </div>
           ))}
         </div>
+      </div>
+      <div className="clear-filters-button">
+        <button onClick={clearFilters}>Clear Filters</button>
       </div>
     </div>
   );
