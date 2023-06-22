@@ -11,6 +11,20 @@ import { MDBRange } from "mdb-react-ui-kit";
 const Filter = ({ setResults }) => {
   const [carList, setCarList] = useState([]);
 
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 550);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 550);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -239,6 +253,18 @@ const Filter = ({ setResults }) => {
     selectedLocations,
     selectedDownPayments,
   ]);
+
+  //   window width event listener, listening for when width is below/above 550px, having two different returns if above/below.
+
+  /*
+  if (isSmallScreen) {
+    return (
+      // bootstrap version of "filters-container"
+
+   
+    );
+  }
+*/
 
   return (
     <div className="filters-container">
