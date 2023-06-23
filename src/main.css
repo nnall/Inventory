@@ -415,6 +415,7 @@ button:hover{
 .filters{
     display:flex;
     flex-wrap:wrap;
+    border: 1px solid red;
 }
 
 .filters input{

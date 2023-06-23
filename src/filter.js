@@ -6,6 +6,7 @@ import json from "./inventory.json";
 import Input from "./input";
 import Checkboxes from "./checkboxes";
 import { MDBRange } from "mdb-react-ui-kit";
+import Accordion from "react-bootstrap/Accordion";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
@@ -256,15 +257,121 @@ const Filter = ({ setResults }) => {
 
   //   window width event listener, listening for when width is below/above 550px, having two different returns if above/below.
 
-  /*
   if (isSmallScreen) {
+    // RUN ALL .MAP()=>{} HERE?
+
     return (
       // bootstrap version of "filters-container"
+      <div className="filters-container">
+        <div className="filter-type">
+          <h4>Make</h4>
+          <Accordion className="MakeAcc" /*defaultActiveKey=""*/>
+            {makeArray.map((make, id) => (
+              <Accordion.Item key={make} value={make} id={make} eventKey={make}>
+                <Accordion.Header>{make}</Accordion.Header>
+                <Accordion.Body>
+                  <Checkbox
+                    id={make}
+                    value={make}
+                    onChange={(e) => handleChange("make", e.target.value)}
+                  />
+                </Accordion.Body>
+              </Accordion.Item>
+              //   </input>
+            ))}
+          </Accordion>
+        </div>
 
-   
+        <div className="filter-type">
+          <h4>Year</h4>
+          <Accordion className="YearAcc" /*defaultActiveKey=""*/>
+            {yearArray.map((year, id) => (
+              <Accordion.Item key={year} value={year} id={year} eventKey={year}>
+                <Accordion.Header>{year}</Accordion.Header>
+                <Accordion.Body>
+                  <Checkbox
+                    id={year}
+                    value={year}
+                    onChange={(e) => handleChange("year", e.target.value)}
+                  />
+                </Accordion.Body>
+              </Accordion.Item>
+              //   </input>
+            ))}
+          </Accordion>
+        </div>
+
+        <div className="filter-type">
+          <h4>Color</h4>
+          <Accordion className="ColorAcc" /*defaultActiveKey=""*/>
+            {colorArray.map((color, id) => (
+              <Accordion.Item
+                key={color}
+                value={color}
+                id={color}
+                eventKey={color}
+              >
+                <Accordion.Header>{color}</Accordion.Header>
+                <Accordion.Body>
+                  <Checkbox
+                    id={color}
+                    value={color}
+                    onChange={(e) => handleChange("color", e.target.value)}
+                  />
+                </Accordion.Body>
+              </Accordion.Item>
+              //   </input>
+            ))}
+          </Accordion>
+        </div>
+
+        {/* DOWN PAYMENT MIN-MAX SLIDER */}
+
+        <div className="filter-type">
+          <h4>Down Payment</h4>
+          <MDBRange
+            min={min}
+            max={max}
+            defaultValue={max}
+            id="customRange"
+            onChange={(e) => {
+              const limit = Number(e.target.value);
+              handleChange("requireddown", limit);
+            }}
+          />
+        </div>
+
+        <div className="filter-type">
+          <h4>Location</h4>
+          <Accordion className="LocationAcc" /*defaultActiveKey=""*/>
+            {locationArray.map((location, id) => (
+              <Accordion.Item
+                key={location}
+                value={location}
+                id={location}
+                eventKey={location}
+              >
+                <Accordion.Header>{location}</Accordion.Header>
+                <Accordion.Body>
+                  <Checkbox
+                    id={location}
+                    value={location}
+                    onChange={(e) => handleChange("location", e.target.value)}
+                  />
+                </Accordion.Body>
+              </Accordion.Item>
+              //   </input>
+            ))}
+          </Accordion>
+        </div>
+        <div className="clear-filters-button">
+          <button onClick={clearFilters}>Clear Filters</button>
+        </div>
+      </div>
     );
   }
-*/
+
+  //   ELSE RETURN THIS DESKTOP VERSION OF FILTERS-CONTAINER
 
   return (
     <div className="filters-container">
