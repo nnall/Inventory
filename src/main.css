@@ -132,26 +132,6 @@ button:hover svg{
 
 
 
-/* .dropdown-menu:hover{
-    background-color: var(--cardBG-hover);
-}
-
-.dropdown-menu:hover .filter-type{
-    background-color: var(--cardBG-hover);
-}
-
-.dropdown-menu:hover .search-bar-container{
-    background-color: var(--cardBG-hover);
-} */
-
-@media (min-width:550px ){ 
-    .dropdown-menu, .filter-type{
-        min-width: 30rem;
-    }
-  
-}
-
-
 
 .dropdown-menu.active{
     opacity: 1;

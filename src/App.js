@@ -19,8 +19,9 @@ const App = () => {
     fetchData();
   }, []);
 
-  const apiUrl =
-    "http://localhost:8080/https://holmesmotors.com/api/inventory/feed?key=hs78ki34ERs";
+  // http://localhost:8080/
+
+  const apiUrl = "https://holmesmotors.com/api/inventory/feed?key=hs78ki34ERs";
 
   const fetchData = async () => {
     try {
