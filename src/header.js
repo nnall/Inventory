@@ -15,6 +15,8 @@ const Header = ({ setResults }) => {
   const [carList, setCarList] = useState([]);
   const dropdownRef = useRef(null);
 
+  const svgRef = useRef(null);
+
   carList.forEach((car, i) => {
     car.id = i + 1;
   });
@@ -56,15 +58,43 @@ const Header = ({ setResults }) => {
     }
   };
 
+  useEffect(() => {
+    const handleSvgClick = (event) => {
+      if (svgRef.current && svgRef.current.contains(event.target)) {
+        if (menu) {
+          setMenu(false);
+        }
+        event.stopPropagation();
+        handleMenuClick();
+      }
+    };
+
+    svgRef.current.addEventListener("click", handleSvgClick);
+
+    // document.addEventListener("click", handleSvgClick);
+
+    return () => {
+      svgRef.current.removeEventListener("click", handleSvgClick);
+    };
+  }, []);
+
   const menuButtonStyle = {
     transform: menu || menuButtonActive ? "scale(1.1)" : "scale(1)",
-    backgroundColor: menu || menuButtonActive ? "var(--LightestBG)" : "initial",
+    backgroundColor:
+      menu || menuButtonActive ? "var(--HMGreen)" : "var(--Yellow)",
+    fill: menu || menuButtonActive ? "white" : "var(--DarkText)",
+  };
+
+  const SVGStyle = {
+    fill: menu || menuButtonActive ? "white" : "var(--DarkText)",
+    strokeWidth: ".001px",
   };
 
   return (
     <>
       <header>
-        <img src="./img/HMLogo.jpeg" alt="logo" />
+        {/* <img src="./img/logoHM.png" alt="logo" /> */}
+        <img src={require("./img/logoHM.png")} />
         {/* <h1>Inventory Search</h1> */}
         <div className="filter-container">
           <div
@@ -76,7 +106,21 @@ const Header = ({ setResults }) => {
               style={menuButtonStyle}
               onMouseEnter={() => setMenuButtonActive(true)}
               onMouseLeave={() => setMenuButtonActive(false)}
-            ></button>
+            >
+              {/* <img src={require("./img/menuIcon.svg")} /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 30 30"
+                width="30px"
+                height="30px"
+                ref={svgRef}
+                style={SVGStyle}
+                font-weight="lighter"
+                onClick={handleMenuClick}
+              >
+                <path d="M 3 7 A 1.0001 1.0001 0 1 0 3 9 L 27 9 A 1.0001 1.0001 0 1 0 27 7 L 3 7 z M 3 14 A 1.0001 1.0001 0 1 0 3 16 L 27 16 A 1.0001 1.0001 0 1 0 27 14 L 3 14 z M 3 21 A 1.0001 1.0001 0 1 0 3 23 L 27 23 A 1.0001 1.0001 0 1 0 27 21 L 3 21 z" />
+              </svg>
+            </button>
           </div>
         </div>
       </header>

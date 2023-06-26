@@ -7,7 +7,7 @@ import Searchbar from "./searchbar";
 import Checkbox from "./checkboxes";
 import Header from "./header";
 import Filter from "./filter";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"; //why is this underlined, its been added in package.json
 import Car from "./car.js";
 
 const App = () => {

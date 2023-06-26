@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { useState, useEffect } from "react";
 // import carList from "./inventory.json";
 import Checkbox from "./checkboxes";
@@ -6,11 +6,25 @@ import json from "./inventory.json";
 import Input from "./input";
 import Checkboxes from "./checkboxes";
 import { MDBRange } from "mdb-react-ui-kit";
-import Accordion from "react-bootstrap/Accordion";
+// import Accordion from "react-bootstrap/Accordion";
+// import { Card, Form } from "react-bootstrap";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
   const [carList, setCarList] = useState([]);
+
+  const [activeItem, setActiveItem] = useState(null);
+
+  const handleItemClick = (item) => {
+    setActiveItem(item === activeItem ? null : item);
+  };
+
+  //   const toggleItem = (item) => {
+  //     setActiveItems((prevActiveItems) => ({
+  //       ...prevActiveItems,
+  //       [item]: !prevActiveItems[item],
+  //     }));
+  //   };
 
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 550);
 
@@ -138,6 +152,10 @@ const Filter = ({ setResults }) => {
     }
   }
 
+  function numberTrans(number) {
+    return (Math.round(number * 100) / 100).toFixed(2);
+  }
+
   useEffect(() => {
     filterResults();
   }, [
@@ -163,60 +181,6 @@ const Filter = ({ setResults }) => {
       checkbox.checked = false;
     });
   };
-
-  //   const filterResults = () => {
-  //     let results = [...carList];
-
-  //     if (selectedMakes.length > 0) {
-  //       results = results.filter((car) => selectedMakes.includes(car.make));
-  //     }
-  //     if (selectedYears.length > 0) {
-  //       results = results.filter((car) => selectedYears.includes(car.year));
-  //     }
-  //     if (selectedColors.length > 0) {
-  //       results = results.filter((car) => selectedColors.includes(car.color));
-  //     }
-  //     if (selectedLocations.length > 0) {
-  //       results = results.filter((car) =>
-  //         selectedLocations.includes(car.location)
-  //       );
-  //     }
-  //     if (selectedDownPayments > 0) {
-  //       results = results.filter(
-  //         (car) => Number(car.requireddown) <= selectedDownPayments
-  //       );
-
-  //       //   const downPaymentMatch =
-  //       //     selectedDownPayments.length === 0 ||
-  //       //     selectedDownPayments.includes(Number(car.requireddown));
-
-  //       //   const downPaymentMatch =
-  //       //     selectedDownPayments.length === 0 ||
-  //       //     selectedDownPayments.includes(Number(car.requireddown)) ||
-  //       //     (selectedDownPayments.length === 1 &&
-  //       //       Number(car.requireddown) <= selectedDownPayments[0]); // Updated condition
-
-  //       //   const downPaymentMatch =
-  //       //     selectedDownPayments === 0 ||
-  //       //     Number(car.requireddown) <= selectedDownPayments;
-
-  //       //   console.log(downPaymentMatch);
-
-  //       //   console.log(downPaymentMatch);
-  //     }
-
-  //     // return (
-  //     //   makeMatch && yearMatch && colorMatch && locationMatch && downPaymentMatch
-  //     // );
-
-  //     // if (rangeSliderChanged) {
-  //     //   // Sort by requireddown only if range slider caused the filtering
-  //     //   results.sort((a, b) => a.requireddown - b.requireddown);
-  //     //   setRangeSliderChanged(false); // Reset the flag after sorting
-  //     // }
-
-  //     setResults(results);
-  //   };
 
   const filterResults = () => {
     let results = [...carList]; // Create a copy of the carList array
@@ -257,119 +221,13 @@ const Filter = ({ setResults }) => {
 
   //   window width event listener, listening for when width is below/above 550px, having two different returns if above/below.
 
-  if (isSmallScreen) {
-    // RUN ALL .MAP()=>{} HERE?
+  /*defaultActiveKey=""*/
 
-    return (
-      // bootstrap version of "filters-container"
-      <div className="filters-container">
-        <div className="filter-type">
-          <h4>Make</h4>
-          <Accordion className="MakeAcc" /*defaultActiveKey=""*/>
-            {makeArray.map((make, id) => (
-              <Accordion.Item key={make} value={make} id={make} eventKey={make}>
-                <Accordion.Header>{make}</Accordion.Header>
-                <Accordion.Body>
-                  <Checkbox
-                    id={make}
-                    value={make}
-                    onChange={(e) => handleChange("make", e.target.value)}
-                  />
-                </Accordion.Body>
-              </Accordion.Item>
-              //   </input>
-            ))}
-          </Accordion>
-        </div>
+  //   if(isSmallScreen){
+  //     return(
 
-        <div className="filter-type">
-          <h4>Year</h4>
-          <Accordion className="YearAcc" /*defaultActiveKey=""*/>
-            {yearArray.map((year, id) => (
-              <Accordion.Item key={year} value={year} id={year} eventKey={year}>
-                <Accordion.Header>{year}</Accordion.Header>
-                <Accordion.Body>
-                  <Checkbox
-                    id={year}
-                    value={year}
-                    onChange={(e) => handleChange("year", e.target.value)}
-                  />
-                </Accordion.Body>
-              </Accordion.Item>
-              //   </input>
-            ))}
-          </Accordion>
-        </div>
-
-        <div className="filter-type">
-          <h4>Color</h4>
-          <Accordion className="ColorAcc" /*defaultActiveKey=""*/>
-            {colorArray.map((color, id) => (
-              <Accordion.Item
-                key={color}
-                value={color}
-                id={color}
-                eventKey={color}
-              >
-                <Accordion.Header>{color}</Accordion.Header>
-                <Accordion.Body>
-                  <Checkbox
-                    id={color}
-                    value={color}
-                    onChange={(e) => handleChange("color", e.target.value)}
-                  />
-                </Accordion.Body>
-              </Accordion.Item>
-              //   </input>
-            ))}
-          </Accordion>
-        </div>
-
-        {/* DOWN PAYMENT MIN-MAX SLIDER */}
-
-        <div className="filter-type">
-          <h4>Down Payment</h4>
-          <MDBRange
-            min={min}
-            max={max}
-            defaultValue={max}
-            id="customRange"
-            onChange={(e) => {
-              const limit = Number(e.target.value);
-              handleChange("requireddown", limit);
-            }}
-          />
-        </div>
-
-        <div className="filter-type">
-          <h4>Location</h4>
-          <Accordion className="LocationAcc" /*defaultActiveKey=""*/>
-            {locationArray.map((location, id) => (
-              <Accordion.Item
-                key={location}
-                value={location}
-                id={location}
-                eventKey={location}
-              >
-                <Accordion.Header>{location}</Accordion.Header>
-                <Accordion.Body>
-                  <Checkbox
-                    id={location}
-                    value={location}
-                    onChange={(e) => handleChange("location", e.target.value)}
-                  />
-                </Accordion.Body>
-              </Accordion.Item>
-              //   </input>
-            ))}
-          </Accordion>
-        </div>
-        <div className="clear-filters-button">
-          <button onClick={clearFilters}>Clear Filters</button>
-        </div>
-      </div>
-    );
-  }
+  //     )
+  //   }
 
   //   ELSE RETURN THIS DESKTOP VERSION OF FILTERS-CONTAINER
 
@@ -440,11 +298,12 @@ const Filter = ({ setResults }) => {
         <MDBRange
           min={min}
           max={max}
-          defaultValue={max}
+          defaultValue={800}
           id="customRange"
           onChange={(e) => {
             const limit = Number(e.target.value);
-            handleChange("requireddown", limit);
+            console.log(numberTrans(limit));
+            handleChange("requireddown", numberTrans(limit));
           }}
         />
       </div>

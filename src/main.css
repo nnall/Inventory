@@ -14,9 +14,17 @@
     --LighterFG: #C4D7B2;
     --DarkerFG: #A0C49D;
     --Yellow: rgb(247, 245, 178);
+    --HMYellow: #EDC62B;
     --DarkText : rgb(62, 62, 62);
 
+
     --fontFamily: 'Kumbh Sans', sans-serif;
+
+
+    --headerColor: #212529;
+    --cardBG: #07303E;
+    --cardBG-hover: #0e4c61;
+    --HMGreen: #23592C;
 
 }
 
@@ -35,23 +43,22 @@ header{
     display:flex;
     justify-content: center;
     align-items: center;
+    padding:1rem;
    
-    height: 5rem;
-    background-color:var(--LighterBG);
+    /* height: 7rem; */
+    background-color:var(--headerColor);
     position:fixed;
     width:100%;
     margin-top:0;
-    border-bottom: 10px solid var(--DarkText);
+    
 }
 
 header img{
    max-width:40%;
    justify-self:flex-start;
-    
-    /* height:100%; */
     margin-right:2%;
 
-    max-height:100%;
+    height: 3rem;
    
 }
 
@@ -62,23 +69,35 @@ h1{
 .menu-btn{
     position:fixed;
     z-index: 15;
-    top:.5rem;
+    top:.75rem;
     right:1rem;
     height: 50px;
     width: 50px;
-    background-color: var(--DarkerFG);
-    border-radius: 50%;
-    transition: 200ms ease-out;
+    /* background-color: blue;; */
+    border-radius: 1rem;
+    border: 2px solid white;
+    transition: 100ms ease-out;
 }
 .menu-btn:hover{
     transform:scale(1.1);
+    /* background-color: var(--DarkerFG); */
 }
 
 
 button:hover{
     cursor: pointer;
-    background-color: var(--LightestBG);
 }
+
+button svg{
+    stroke:var(--DarkText);
+    /* stroke-Width:2px; */
+}
+
+button:hover svg{
+    fill:white;
+}
+
+
 
 
 .menu-trigger .menu-btn.active{
@@ -87,12 +106,12 @@ button:hover{
 }
 .dropdown-menu{
     z-index:200;
-    border: 5px solid var(--DarkText);
+    border: 5px solid white;
     box-shadow: .5rem .5rem rgb(62, 62, 62, .6);
     border-radius:2rem;
 
     padding: 1rem;
-    background-color: var(--DarkerFG);
+    
     position:fixed;
     top:6rem;
     right:1rem;
@@ -101,11 +120,29 @@ button:hover{
     display: flex;
     flex-direction:column;
     align-items: center;;
-    color: var(--DarkText);
+    color: white;
     font-weight:50;
     overflow: visible;
     
 }
+
+.dropdown-menu, .filter-type, .search-bar-container {
+    background-color: var(--cardBG-hover);
+}
+
+
+
+/* .dropdown-menu:hover{
+    background-color: var(--cardBG-hover);
+}
+
+.dropdown-menu:hover .filter-type{
+    background-color: var(--cardBG-hover);
+}
+
+.dropdown-menu:hover .search-bar-container{
+    background-color: var(--cardBG-hover);
+} */
 
 @media (min-width:550px ){ 
     .dropdown-menu, .filter-type{
@@ -132,7 +169,7 @@ button:hover{
 
 .search-bar-container{
     /* border: 2px solid orange; */
-    background-color:var(--LighterFG);
+    background-color:var(--cardBG-hover);
     padding: 1rem;
     display:flex;
     flex-direction: column;;
@@ -147,6 +184,8 @@ button:hover{
     padding:1rem;
 }
 
+
+
 .checkboxes{
     border: .25px solid var(--LightestBG);
     padding:.5rem;
@@ -158,8 +197,14 @@ button:hover{
 }
 
 .checkboxes:hover{
+    color: var(--cardBG);
     background-color: var(--Yellow);
-    font-weight:700;
+    /* font-weight:700; */
+}
+
+
+.accordion-collapse{
+    border: 5px solid pink;
 }
 
 .carList{
@@ -237,10 +282,10 @@ button:hover{
 .card{
     
     font-weight: 100;
-    color: var(--DarkText);
-    background-color: var(--DarkerFG);
+    color: white;
+    background-color: var(--cardBG);
     /* border:1px solid red; */
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -254,19 +299,21 @@ button:hover{
 .card:hover{
     transform:scale(1.025);
     box-shadow: .5rem .5rem rgb(62, 62, 62, .6);
-    background-color: var(--LighterFG);
+    background-color: var(--cardBG-hover);
 }
 
 .card h3{
     font-size: 2em;
     text-align: center;
     margin-bottom:1rem;
+    letter-spacing: .25rem;
     
 }
 
 .card h5{
     font-size: 1.5em;
     text-align:center;
+    letter-spacing: .1rem;
 }
 
 .card > *:not(:last-child):not(img) {
@@ -294,7 +341,7 @@ button:hover{
 .card-details{
     border-radius:.25rem;
     /* border: 2px solid black; */
-    background-color: var(--LighterBG);
+    /* background-color: var(--LighterBG); */
     padding: 1rem;
     font-weight: 400;
     font-family: 'Kumbh Sans', sans-serif;
@@ -304,8 +351,8 @@ button:hover{
 }
 
 .card-details p:not(:first-child){
-    line-height: 2.5rem;
-    border-top: 1px solid var(--DarkText);
+    line-height: 2.75rem;
+    border-top: 1px solid white;
 }
 
 .card-btn{
@@ -322,14 +369,9 @@ button:hover{
 }
 
 .card-btn:hover{
-    background-color: var(--DarkText);
-    color: var(--LightestBG);
-    transform: scale(1.1);
-        
-}
-
-.seDetails-btn{
-    
+    background-color: var(--HMYellow);
+    color: black;
+    transform: scale(1.15);   
 }
 
 
@@ -402,20 +444,23 @@ button:hover{
     /* border:1px solid pink; */
     margin-bottom: 1rem;
     padding: .5rem;
-    background-color: var(--LighterFG);
+    background-color: var(--cardBG-hover);
 }
 
 .filter-type h4{
+    font-family: "Kumbh Sans";
     font-size: 1.5rem;
     margin-bottom: 1rem;
     text-align:center;
+    letter-spacing: 5px;;
+    font-weight: 400
 }
 
 
 .filters{
     display:flex;
     flex-wrap:wrap;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 .filters input{
@@ -458,6 +503,14 @@ button:hover{
 .range{
     width:100%;
     /* border: 1px solid blue; */
+}
+
+.range input{
+    background-color: var(--Yellow);
+}
+
+.range span{
+    font-size: 2rem;
 }
 .form-range{
     width:100%
