@@ -1,32 +1,33 @@
 import React, { Component } from "react";
 import { useState, useEffect } from "react";
 // import carList from "./inventory.json";
+
+import { Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
+
+// import DropdownButton from "react-bootstrap/DropdownButton";
 import Checkbox from "./checkboxes";
 import json from "./inventory.json";
 import Input from "./input";
 import Checkboxes from "./checkboxes";
 import { MDBRange } from "mdb-react-ui-kit";
-// import Accordion from "react-bootstrap/Accordion";
-// import { Card, Form } from "react-bootstrap";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
+  const dropdown = document.querySelector(".dropdown-menu");
+
   const [carList, setCarList] = useState([]);
 
-  const [activeItem, setActiveItem] = useState(null);
-
-  const handleItemClick = (item) => {
-    setActiveItem(item === activeItem ? null : item);
-  };
-
-  //   const toggleItem = (item) => {
-  //     setActiveItems((prevActiveItems) => ({
-  //       ...prevActiveItems,
-  //       [item]: !prevActiveItems[item],
-  //     }));
-  //   };
-
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 550);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleDropdownToggle = (status) => {
+    if (status == true) {
+      dropdown.style.display = "none";
+    }
+    dropdown.style.display = "block";
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -223,11 +224,60 @@ const Filter = ({ setResults }) => {
 
   /*defaultActiveKey=""*/
 
-  //   if(isSmallScreen){
-  //     return(
+  if (isSmallScreen) {
+    return (
+      <>
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="success"
+            id="dropdown-basic"
+            className="dropdown_toggleBtn"
+            onClick={handleDropdownToggle(isDropdownOpen)}
+            aria={isDropdownOpen}
+          >
+            Make
+          </Dropdown.Toggle>
 
-  //     )
-  //   }
+          <Dropdown.Menu className="mobile_dropdown" show={isDropdownOpen}>
+            {makeArray.map((make, id) => (
+              <div key={make} className="">
+                <Dropdown.Item>
+                  <input
+                    id={make}
+                    value={make}
+                    type="checkbox" // value={input}
+                    onChange={(e) => {
+                      handleChange("make", e.target.value);
+                    }}
+                  ></input>
+                  {make}
+                </Dropdown.Item>
+              </div>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <div className="filter-type">
+          <h4>Down Payment</h4>
+          <MDBRange
+            min={min}
+            max={max}
+            defaultValue={800}
+            id="customRange"
+            onChange={(e) => {
+              const limit = Number(e.target.value);
+              console.log(numberTrans(limit));
+              handleChange("requireddown", numberTrans(limit));
+            }}
+          />
+        </div>
+
+        <div className="clear-filters-button">
+          <button onClick={clearFilters}>Clear Filters</button>
+        </div>
+      </>
+    );
+  }
 
   //   ELSE RETURN THIS DESKTOP VERSION OF FILTERS-CONTAINER
 
