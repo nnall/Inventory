@@ -179,9 +179,14 @@ button:hover svg{
 
 .mobile_dropdown{ 
     border:2px solid red;
-    display:block;
+    /* display:block; */
     border-radius : 0rem;
 }
+
+.items-box{
+    border: 3px solid pink;
+}
+
 
 .dropdown-item{
     display:block;
@@ -206,6 +211,19 @@ button:hover svg{
     max-width:100%;
     font-size: 1.45rem;
 }
+
+.dropdown_toggleBtn.active {
+    opacity: 1;
+    visibility: visible;
+    transition: .3s ease;
+}
+
+.dropdown_toggleBtn.inactive {
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+}
+
 
 
 .checkboxes{
@@ -465,6 +483,7 @@ button:hover svg{
     margin-top:1rem;
     overflow-y: scroll;
     overflow-x: visible;
+    border: 2px solid yellow;
 }
 
 .filters-container::-webkit-scrollbar{

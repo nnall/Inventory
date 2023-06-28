@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // import carList from "./inventory.json";
 
 import { Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
@@ -13,21 +13,10 @@ import { MDBRange } from "mdb-react-ui-kit";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
-  const dropdown = document.querySelector(".dropdown-menu");
+  const dropdownRef = useRef(null);
 
   const [carList, setCarList] = useState([]);
-
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 550);
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleDropdownToggle = (status) => {
-    if (status == true) {
-      dropdown.style.display = "none";
-    }
-    dropdown.style.display = "block";
-    setIsDropdownOpen(!isDropdownOpen);
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -224,38 +213,36 @@ const Filter = ({ setResults }) => {
 
   /*defaultActiveKey=""*/
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen((prevState) => !prevState); // Toggle the dropdown menu visibility state
+  };
+
   if (isSmallScreen) {
     return (
       <>
-        <Dropdown>
-          <Dropdown.Toggle
-            variant="success"
-            id="dropdown-basic"
-            className="dropdown_toggleBtn"
-            onClick={handleDropdownToggle(isDropdownOpen)}
-            aria={isDropdownOpen}
-          >
-            Make
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu className="mobile_dropdown" show={isDropdownOpen}>
-            {makeArray.map((make, id) => (
-              <div key={make} className="">
-                <Dropdown.Item>
-                  <input
-                    id={make}
-                    value={make}
-                    type="checkbox" // value={input}
-                    onChange={(e) => {
-                      handleChange("make", e.target.value);
-                    }}
-                  ></input>
-                  {make}
-                </Dropdown.Item>
-              </div>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
+        <DropdownButton
+          title="Make"
+          id="dropdown-basic-button"
+          show={isDropdownOpen}
+          onToggle={handleDropdownToggle}
+        >
+          {makeArray.map((make, id) => (
+            // <div>
+            <Dropdown.Item key={make} className="items-box">
+              <input
+                id={make}
+                value={make}
+                type="checkbox" // value={input}
+                onChange={(e) => {
+                  handleChange("make", e.target.value);
+                }}
+              ></input>
+              {make}
+            </Dropdown.Item>
+            // </div>
+          ))}
+        </DropdownButton>
 
         <div className="filter-type">
           <h4>Down Payment</h4>

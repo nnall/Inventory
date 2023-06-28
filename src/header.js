@@ -44,7 +44,8 @@ const Header = ({ setResults }) => {
 
   const handleMenuClick = () => {
     setMenu((prevState) => !prevState);
-    setMenuButtonActive(true);
+
+    // setMenuButtonActive(true);
   };
 
   const handleClickOutside = (event) => {
@@ -104,6 +105,7 @@ const Header = ({ setResults }) => {
             <button
               className="menu-btn"
               style={menuButtonStyle}
+              onClick={handleMenuClick}
               onMouseEnter={() => setMenuButtonActive(true)}
               onMouseLeave={() => setMenuButtonActive(false)}
             >
