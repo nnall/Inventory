@@ -171,6 +171,10 @@ button:hover svg{
     margin:none; */
 }
 
+.selected-option{
+    background-color: var(--DarkerFG);
+}
+
 
 .form-control{
     height:10rem;
@@ -186,6 +190,13 @@ button:hover svg{
     margin:0;
     border-bottom: 1px solid var(--DarkText);
 }
+
+option:hover{
+    background-color: yellow;
+}
+
+
+ 
 
 .accordion-body{
     padding: 0;
@@ -430,6 +441,8 @@ button:hover svg{
 .accordion-item{
     margin-bottom:5%;
 }
+
+
 
 
 .filters-container::-webkit-scrollbar{

@@ -210,6 +210,8 @@ const Filter = ({ setResults }) => {
     selectedDownPayments,
   ]);
 
+  function selectedOptions(option) {}
+
   //   window width event listener, listening for when width is below/above 550px, having two different returns if above/below.
 
   /*defaultActiveKey=""*/
@@ -221,6 +223,7 @@ const Filter = ({ setResults }) => {
 
   const [field, setField] = useState([]);
 
+  // EXAMPLE
   <div className="filter-type">
     <h4>Make</h4>
     <div className="filters">
@@ -254,18 +257,16 @@ const Filter = ({ setResults }) => {
                   as="select"
                   multiple
                   value={field}
-                  onChange={(e) =>
-                    setField(
-                      [].slice
-                        .call(e.target.selectedOptions)
-                        .map((item) => item.value)
-                    )
-                  }
+                  onChange={(e) => handleChange("make", e.target.value)}
+                  /**/
+                  className="custom-select"
                 >
                   {/* <div className="formDropdown-wrapper"> */}
                   {makeArray.map((make, id) => (
                     <option
+                      key={id}
                       value={make}
+                      className={field.includes(make) ? "selected-option" : ""}
                       onChange={(e) => {
                         handleChange("make", e.target.value);
                       }}
@@ -394,6 +395,15 @@ const Filter = ({ setResults }) => {
       </>
     );
   }
+
+  /*
+  Making entire 'isSmallScreen' return  - so <></> - into a <Form>
+  Need to make the 'Down Payment' into a Form.Group & Form.Control, so that it can be submitted to the overarching Form. 
+
+  The Form itself will run the same way.. every change in handleChange will be considered a form submit. 
+  */
+
+  //
 
   //   ELSE RETURN THIS DESKTOP VERSION OF FILTERS-CONTAINER
 
