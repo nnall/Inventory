@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { useState, useEffect, useRef } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 // import carList from "./inventory.json";
 
-import { Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
+// import { Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
+import Accordion from "react-bootstrap/Accordion";
 
 // import DropdownButton from "react-bootstrap/DropdownButton";
 import Checkbox from "./checkboxes";
@@ -13,8 +15,6 @@ import { MDBRange } from "mdb-react-ui-kit";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
-  const dropdownRef = useRef(null);
-
   const [carList, setCarList] = useState([]);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 550);
 
@@ -213,37 +213,64 @@ const Filter = ({ setResults }) => {
 
   /*defaultActiveKey=""*/
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const handleDropdownToggle = () => {
-    setIsDropdownOpen((prevState) => !prevState); // Toggle the dropdown menu visibility state
-  };
+  // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  // const handleAccordionToggle = () => {
+  //   setIsAccordionOpen(!isAccordionOpen);
+  // };
 
   if (isSmallScreen) {
     return (
       <>
-        <DropdownButton
-          title="Make"
-          id="dropdown-basic-button"
-          show={isDropdownOpen}
-          onToggle={handleDropdownToggle}
-        >
-          {makeArray.map((make, id) => (
-            // <div>
-            <Dropdown.Item key={make} className="items-box">
-              <input
-                id={make}
-                value={make}
-                type="checkbox" // value={input}
-                onChange={(e) => {
-                  handleChange("make", e.target.value);
-                }}
-              ></input>
-              {make}
-            </Dropdown.Item>
-            // </div>
-          ))}
-        </DropdownButton>
-
+        <Accordion>
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Make</Accordion.Header>
+            <Accordion.Body>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="1">
+            <Accordion.Header>Year</Accordion.Header>
+            <Accordion.Body>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="2">
+            <Accordion.Header>Color</Accordion.Header>
+            <Accordion.Body>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="3">
+            <Accordion.Header>Location</Accordion.Header>
+            <Accordion.Body>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
         <div className="filter-type">
           <h4>Down Payment</h4>
           <MDBRange
@@ -258,7 +285,6 @@ const Filter = ({ setResults }) => {
             }}
           />
         </div>
-
         <div className="clear-filters-button">
           <button onClick={clearFilters}>Clear Filters</button>
         </div>
