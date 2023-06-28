@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // import { Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
 import Accordion from "react-bootstrap/Accordion";
+import { Col, Form } from "react-bootstrap";
 
 // import DropdownButton from "react-bootstrap/DropdownButton";
 import Checkbox from "./checkboxes";
@@ -218,6 +219,28 @@ const Filter = ({ setResults }) => {
   //   setIsAccordionOpen(!isAccordionOpen);
   // };
 
+  const [field, setField] = useState([]);
+
+  <div className="filter-type">
+    <h4>Make</h4>
+    <div className="filters">
+      {makeArray.map((make, id) => (
+        <div key={make} className="checkboxes">
+          <input
+            id={make}
+            value={make}
+            type="checkbox"
+            // value={input}
+            onChange={(e) => {
+              handleChange("make", e.target.value);
+            }}
+          ></input>
+          <label htmlFor={make}>{make}</label>
+        </div>
+      ))}
+    </div>
+  </div>;
+
   if (isSmallScreen) {
     return (
       <>
@@ -225,49 +248,129 @@ const Filter = ({ setResults }) => {
           <Accordion.Item eventKey="0">
             <Accordion.Header>Make</Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <Form.Group as={Col} controlId="my_multiselect_field">
+                {/* <Form.Label>My multiselect</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  multiple
+                  value={field}
+                  onChange={(e) =>
+                    setField(
+                      [].slice
+                        .call(e.target.selectedOptions)
+                        .map((item) => item.value)
+                    )
+                  }
+                >
+                  {/* <div className="formDropdown-wrapper"> */}
+                  {makeArray.map((make, id) => (
+                    <option
+                      value={make}
+                      onChange={(e) => {
+                        handleChange("make", e.target.value);
+                      }}
+                    >
+                      {make}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
             <Accordion.Header>Year</Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <Form.Group as={Col} controlId="my_multiselect_field">
+                {/* <Form.Label>My multiselect</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  multiple
+                  value={field}
+                  onChange={(e) =>
+                    setField(
+                      [].slice
+                        .call(e.target.selectedOptions)
+                        .map((item) => item.value)
+                    )
+                  }
+                >
+                  {/* <div className="formDropdown-wrapper"> */}
+                  {yearArray.map((year, id) => (
+                    <option
+                      value={year}
+                      onChange={(e) => {
+                        handleChange("year", e.target.value);
+                      }}
+                    >
+                      {year}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
             <Accordion.Header>Color</Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <Form.Group as={Col} controlId="my_multiselect_field">
+                {/* <Form.Label>My multiselect</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  multiple
+                  value={field}
+                  onChange={(e) =>
+                    setField(
+                      [].slice
+                        .call(e.target.selectedOptions)
+                        .map((item) => item.value)
+                    )
+                  }
+                >
+                  {/* <div className="formDropdown-wrapper"> */}
+                  {colorArray.map((color, id) => (
+                    <option
+                      value={color}
+                      onChange={(e) => {
+                        handleChange("color", e.target.value);
+                      }}
+                    >
+                      {color}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="3">
             <Accordion.Header>Location</Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <Form.Group as={Col} controlId="my_multiselect_field">
+                {/* <Form.Label>My multiselect</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  multiple
+                  value={field}
+                  onChange={(e) =>
+                    setField(
+                      [].slice
+                        .call(e.target.selectedOptions)
+                        .map((item) => item.value)
+                    )
+                  }
+                >
+                  {/* <div className="formDropdown-wrapper"> */}
+                  {locationArray.map((location, id) => (
+                    <option
+                      value={location}
+                      onChange={(e) => {
+                        handleChange("location", e.target.value);
+                      }}
+                    >
+                      {locationTrans(location)}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
@@ -280,7 +383,7 @@ const Filter = ({ setResults }) => {
             id="customRange"
             onChange={(e) => {
               const limit = Number(e.target.value);
-              console.log(numberTrans(limit));
+              // console.log(numberTrans(limit));
               handleChange("requireddown", numberTrans(limit));
             }}
           />
