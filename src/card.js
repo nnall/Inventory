@@ -30,6 +30,7 @@ const Card = (props) => {
       <img src={props.photo ? props.photo : placeholder}></img>
 
       <div className="card-details">
+        <p>Color: {props.color}</p>
         <p>Location: {locationTrans(props.location)}</p>
         <p className="retail-tag">Retail: ${numberTrans(props.retailprice)}</p>
         <p>Stock: {props.stock}</p>

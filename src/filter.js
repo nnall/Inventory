@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import carList from "./inventory.json";
-
-// import { Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
 import Accordion from "react-bootstrap/Accordion";
 import { Col, Form } from "react-bootstrap";
 
-// import DropdownButton from "react-bootstrap/DropdownButton";
-import Checkbox from "./checkboxes";
-import json from "./inventory.json";
-import Input from "./input";
-import Checkboxes from "./checkboxes";
 import { MDBRange } from "mdb-react-ui-kit";
+import Select from "react-select";
+import inventory from "./inventory.json";
+
+// Import the CSS styles for react-select
+// import "react-select/dist/react-select.css";
 
 // Just making the checkbox inputs..
 const Filter = ({ setResults }) => {
@@ -35,22 +32,9 @@ const Filter = ({ setResults }) => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/https://holmesmotors.com/api/inventory/feed?key=hs78ki34ERs"
-      );
-      const data = await response.json();
-
-      data.forEach((car, i) => {
-        car.id = i + 1;
-      });
-
-      setCarList(data);
-      setResults(data);
-    } catch (error) {
-      console.log("Error fetching data:", error);
-    }
+  const fetchData = () => {
+    setCarList(inventory);
+    setResults(inventory);
   };
 
   const makeArray = [...new Set(carList.map((car) => car.make))].sort();
@@ -90,44 +74,27 @@ const Filter = ({ setResults }) => {
 
   //   function changeCards(limit) {}
 
-  const handleChange = (field, value) => {
+  const handleChange = (field, values) => {
     if (field === "make") {
-      const updatedMakes = selectedMakes.includes(value)
-        ? selectedMakes.filter((make) => make !== value)
-        : [...selectedMakes, value];
+      const updatedMakes = values;
       setSelectedMakes(updatedMakes);
     }
     if (field === "year") {
-      const updatedYears = selectedYears.includes(value)
-        ? selectedYears.filter((year) => year !== value)
-        : [...selectedYears, value];
+      const updatedYears = values;
       setSelectedYears(updatedYears);
     }
     if (field === "color") {
-      const updatedColors = selectedColors.includes(value)
-        ? selectedColors.filter((color) => color !== value)
-        : [...selectedColors, value];
+      const updatedColors = values;
       setSelectedColors(updatedColors);
     }
     if (field === "location") {
-      const updatedLocations = selectedLocations.includes(value)
-        ? selectedLocations.filter((location) => location !== value)
-        : [...selectedLocations, value];
-      console.log(updatedLocations);
+      const updatedLocations = values;
       setSelectedLocations(updatedLocations);
     }
 
     if (field === "requireddown") {
-      //   console.log(`${value} is the current value`);
-
-      setSelectedDownPayments(value);
+      setSelectedDownPayments(values);
       setRangeSliderChanged(true);
-      //   const updatedDownPayments = selectedDownPayments.includes(value)
-      //     ? selectedDownPayments.filter(
-      //         (requireddown) => Number(requireddown) <= value
-      //       )
-      //     : [...selectedDownPayments, value];
-      //   setSelectedDownPayments(updatedDownPayments);
     }
   };
 
@@ -210,171 +177,220 @@ const Filter = ({ setResults }) => {
     selectedDownPayments,
   ]);
 
-  function selectedOptions(option) {}
+  // function selectedOptions(option) {}
 
-  //   window width event listener, listening for when width is below/above 550px, having two different returns if above/below.
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedValues, setSelectedValues] = useState({});
 
-  /*defaultActiveKey=""*/
+  //  Convert makeArray to usable  object for <Select>
 
-  // const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  // const handleAccordionToggle = () => {
-  //   setIsAccordionOpen(!isAccordionOpen);
-  // };
+  const makeArraySelect = makeArray.map((value) => ({ value, label: value }));
+  const yearArraySelect = yearArray.map((value) => ({ value, label: value }));
+  const colorArraySelect = colorArray.map((value) => ({ value, label: value }));
+  const locationArraySelect = locationArray.map((value) => ({
+    value,
+    label: locationTrans(value),
+  }));
 
-  const [field, setField] = useState([]);
+  // const [selectedOptions, setSelectedOptions] = useState([]);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
-  // EXAMPLE
-  <div className="filter-type">
-    <h4>Make</h4>
-    <div className="filters">
-      {makeArray.map((make, id) => (
-        <div key={make} className="checkboxes">
-          <input
-            id={make}
-            value={make}
-            type="checkbox"
-            // value={input}
-            onChange={(e) => {
-              handleChange("make", e.target.value);
-            }}
-          ></input>
-          <label htmlFor={make}>{make}</label>
-        </div>
-      ))}
-    </div>
-  </div>;
+  const handleMenuOpen = () => {
+    setMenuIsOpen(true);
+  };
+
+  const handleMenuClose = () => {
+    setMenuIsOpen(true);
+  };
 
   if (isSmallScreen) {
     return (
       <>
-        <Accordion>
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>Make</Accordion.Header>
-            <Accordion.Body>
-              <Form.Group as={Col} controlId="my_multiselect_field">
-                {/* <Form.Label>My multiselect</Form.Label> */}
-                <Form.Control
-                  as="select"
-                  multiple
-                  value={field}
-                  onChange={(e) => handleChange("make", e.target.value)}
-                  /**/
-                  className="custom-select"
-                >
-                  {/* <div className="formDropdown-wrapper"> */}
-                  {makeArray.map((make, id) => (
-                    <option
-                      key={id}
-                      value={make}
-                      className={field.includes(make) ? "selected-option" : ""}
-                      onChange={(e) => {
-                        handleChange("make", e.target.value);
-                      }}
-                    >
-                      {make}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="1">
-            <Accordion.Header>Year</Accordion.Header>
-            <Accordion.Body>
-              <Form.Group as={Col} controlId="my_multiselect_field">
-                {/* <Form.Label>My multiselect</Form.Label> */}
-                <Form.Control
-                  as="select"
-                  multiple
-                  value={field}
-                  onChange={(e) =>
-                    setField(
-                      [].slice
-                        .call(e.target.selectedOptions)
-                        .map((item) => item.value)
-                    )
-                  }
-                >
-                  {/* <div className="formDropdown-wrapper"> */}
-                  {yearArray.map((year, id) => (
-                    <option
-                      value={year}
-                      onChange={(e) => {
-                        handleChange("year", e.target.value);
-                      }}
-                    >
-                      {year}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="2">
-            <Accordion.Header>Color</Accordion.Header>
-            <Accordion.Body>
-              <Form.Group as={Col} controlId="my_multiselect_field">
-                {/* <Form.Label>My multiselect</Form.Label> */}
-                <Form.Control
-                  as="select"
-                  multiple
-                  value={field}
-                  onChange={(e) =>
-                    setField(
-                      [].slice
-                        .call(e.target.selectedOptions)
-                        .map((item) => item.value)
-                    )
-                  }
-                >
-                  {/* <div className="formDropdown-wrapper"> */}
-                  {colorArray.map((color, id) => (
-                    <option
-                      value={color}
-                      onChange={(e) => {
-                        handleChange("color", e.target.value);
-                      }}
-                    >
-                      {color}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="3">
-            <Accordion.Header>Location</Accordion.Header>
-            <Accordion.Body>
-              <Form.Group as={Col} controlId="my_multiselect_field">
-                {/* <Form.Label>My multiselect</Form.Label> */}
-                <Form.Control
-                  as="select"
-                  multiple
-                  value={field}
-                  onChange={(e) =>
-                    setField(
-                      [].slice
-                        .call(e.target.selectedOptions)
-                        .map((item) => item.value)
-                    )
-                  }
-                >
-                  {/* <div className="formDropdown-wrapper"> */}
-                  {locationArray.map((location, id) => (
-                    <option
-                      value={location}
-                      onChange={(e) => {
-                        handleChange("location", e.target.value);
-                      }}
-                    >
-                      {locationTrans(location)}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+        <Select
+          onMenuClose={handleMenuClose}
+          placeholder="MAKE"
+          isMulti
+          className="select selectMake"
+          options={makeArraySelect}
+          styles={{
+            option: (provided, state) => ({
+              ...provided,
+              color: "black",
+              fontSize: "1.2rem",
+              ":hover": {
+                backgroundColor: "#23592C",
+                color: "white",
+                cursor: "pointer",
+              },
+            }),
+            multiValue: (provided) => ({
+              ...provided,
+              backgroundColor: "#EDC62B",
+              color: "black",
+              fontWeight: "bolder",
+            }),
+            multiValueRemove: (provided) => ({
+              ...provided,
+              backgroundColor: "rgb(62, 62, 62);",
+
+              color: "white",
+              ":hover": {
+                backgroundColor: "red",
+              },
+            }),
+            placeholder: (provided) => ({
+              ...provided,
+              fontWeight: "bold",
+            }),
+          }}
+          onChange={(selectedOptions) => {
+            const selectedValues = selectedOptions.map(
+              (option) => option.value
+            );
+            handleChange("make", selectedValues);
+            setMenuIsOpen(true);
+          }}
+        ></Select>
+
+        <Select
+          closeMenuOnSelect={false}
+          placeholder="YEAR"
+          isMulti
+          className="select selectYear"
+          options={yearArraySelect}
+          styles={{
+            option: (provided, state) => ({
+              ...provided,
+              color: "black",
+              fontSize: "1.2rem",
+              ":hover": {
+                backgroundColor: "#23592C",
+                color: "white",
+                cursor: "pointer",
+              },
+            }),
+            multiValue: (provided) => ({
+              ...provided,
+              backgroundColor: "#EDC62B",
+              color: "black",
+              fontWeight: "bolder",
+            }),
+            multiValueRemove: (provided) => ({
+              ...provided,
+              backgroundColor: "rgb(62, 62, 62);",
+
+              color: "white",
+              ":hover": {
+                backgroundColor: "red",
+              },
+            }),
+            placeholder: (provided) => ({
+              ...provided,
+              fontWeight: "bold",
+            }),
+          }}
+          onChange={(selectedOptions) => {
+            const selectedValues = selectedOptions.map(
+              (option) => option.value
+            );
+
+            console.log(selectedValues);
+            handleChange("year", selectedValues);
+          }}
+        ></Select>
+        <Select
+          closeMenuOnSelect={false}
+          placeholder="COLOR"
+          isMulti
+          className="select selectColor"
+          options={colorArraySelect}
+          styles={{
+            option: (provided, state) => ({
+              ...provided,
+              color: "black",
+              fontSize: "1.2rem",
+              ":hover": {
+                backgroundColor: "#23592C",
+                color: "white",
+                cursor: "pointer",
+              },
+            }),
+            multiValue: (provided) => ({
+              ...provided,
+              backgroundColor: "#EDC62B",
+              color: "black",
+              fontWeight: "bolder",
+            }),
+            multiValueRemove: (provided) => ({
+              ...provided,
+              backgroundColor: "rgb(62, 62, 62);",
+
+              color: "white",
+              ":hover": {
+                backgroundColor: "red",
+              },
+            }),
+            placeholder: (provided) => ({
+              ...provided,
+              fontWeight: "bold",
+            }),
+          }}
+          onChange={(selectedOptions) => {
+            const selectedValues = selectedOptions.map(
+              (option) => option.value
+            );
+
+            // console.log(selectedValues);
+            handleChange("color", selectedValues);
+          }}
+        ></Select>
+        <Select
+          closeMenuOnSelect={false}
+          placeholder="LOCATION"
+          isMulti
+          className="select selectLocation"
+          options={locationArraySelect}
+          styles={{
+            option: (provided, state) => ({
+              ...provided,
+              color: "black",
+              fontSize: "1.2rem",
+              // textContent: locationTrans(location),
+              ":hover": {
+                backgroundColor: "#23592C",
+                color: "white",
+                cursor: "pointer",
+              },
+            }),
+            multiValue: (provided) => ({
+              ...provided,
+              backgroundColor: "#EDC62B",
+              color: "black",
+              fontWeight: "bolder",
+            }),
+            multiValueRemove: (provided) => ({
+              ...provided,
+              backgroundColor: "rgb(62, 62, 62);",
+              color: "white",
+              ":hover": {
+                backgroundColor: "red",
+              },
+            }),
+            placeholder: (provided) => ({
+              ...provided,
+              fontWeight: "bold",
+            }),
+          }}
+          onChange={(selectedOptions) => {
+            const selectedValues = selectedOptions.map(
+              (option) => option.value
+            );
+
+            // console.log(selectedValues);
+            handleChange("location", selectedValues);
+          }}
+        ></Select>
+
         <div className="filter-type">
           <h4>Down Payment</h4>
           <MDBRange
@@ -395,16 +411,6 @@ const Filter = ({ setResults }) => {
       </>
     );
   }
-
-  /*
-  Making entire 'isSmallScreen' return  - so <></> - into a <Form>
-  Need to make the 'Down Payment' into a Form.Group & Form.Control, so that it can be submitted to the overarching Form. 
-
-  The Form itself will run the same way.. every change in handleChange will be considered a form submit. 
-  */
-
-  //
-
   //   ELSE RETURN THIS DESKTOP VERSION OF FILTERS-CONTAINER
 
   return (
@@ -418,9 +424,20 @@ const Filter = ({ setResults }) => {
                 id={make}
                 value={make}
                 type="checkbox"
-                // value={input}
                 onChange={(e) => {
-                  handleChange("make", e.target.value);
+                  const isChecked = e.target.checked;
+                  const value = e.target.value;
+
+                  setSelectedMakes((prevSelectedMakes) => {
+                    const updatedMakes = isChecked
+                      ? [...prevSelectedMakes, value]
+                      : prevSelectedMakes.filter(
+                          (selectedMake) => selectedMake !== value
+                        );
+                    handleChange("make", updatedMakes);
+
+                    return updatedMakes;
+                  });
                 }}
               ></input>
               <label htmlFor={make}>{make}</label>
@@ -438,7 +455,20 @@ const Filter = ({ setResults }) => {
                 value={year}
                 type="checkbox"
                 onChange={(e) => {
-                  handleChange("year", e.target.value);
+                  const isChecked = e.target.checked;
+                  const value = e.target.value;
+
+                  // handleChange("year", e.target.value);
+                  setSelectedYears((prevSelectedYears) => {
+                    const updatedYears = isChecked
+                      ? [...prevSelectedYears, value]
+                      : prevSelectedYears.filter(
+                          (selectedYear) => selectedYear !== value
+                        );
+                    handleChange("year", updatedYears);
+
+                    return updatedYears;
+                  });
                 }}
               ></input>
               <label htmlFor={year}>{year}</label>
@@ -456,9 +486,20 @@ const Filter = ({ setResults }) => {
                 value={color}
                 type="checkbox"
                 onChange={(e) => {
-                  handleChange("color", e.target.value);
-                  //   console.log(e);
-                  console.log(`${color} was checked`);
+                  const isChecked = e.target.checked;
+                  const value = e.target.value;
+
+                  // handleChange("year", e.target.value);
+                  setSelectedColors((prevSelectedColors) => {
+                    const updatedColors = isChecked
+                      ? [...prevSelectedColors, value]
+                      : prevSelectedColors.filter(
+                          (selectedColor) => selectedColor !== value
+                        );
+                    handleChange("color", updatedColors);
+
+                    return updatedColors;
+                  });
                 }}
               ></input>
               <label htmlFor={color}>{color}</label>
@@ -478,7 +519,7 @@ const Filter = ({ setResults }) => {
           id="customRange"
           onChange={(e) => {
             const limit = Number(e.target.value);
-            console.log(numberTrans(limit));
+            // console.log(numberTrans(limit));
             handleChange("requireddown", numberTrans(limit));
           }}
         />
@@ -494,9 +535,20 @@ const Filter = ({ setResults }) => {
                 value={location}
                 type="checkbox"
                 onChange={(e) => {
-                  handleChange("location", e.target.value);
-                  //   console.log(e);
-                  console.log(`${location} was checked`);
+                  const isChecked = e.target.checked;
+                  const value = e.target.value;
+
+                  // handleChange("year", e.target.value);
+                  setSelectedLocations((prevSelectedLocations) => {
+                    const updatedLocations = isChecked
+                      ? [...prevSelectedLocations, value]
+                      : prevSelectedLocations.filter(
+                          (selectedLocation) => selectedLocation !== value
+                        );
+                    handleChange("location", updatedLocations);
+
+                    return updatedLocations;
+                  });
                 }}
               ></input>
               <label htmlFor={location}>{locationTrans(location)}</label>
