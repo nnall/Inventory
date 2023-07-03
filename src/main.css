@@ -147,6 +147,10 @@ button:hover svg{
     /* overflow:hidden; */
 }
 
+.dropdown_menu >*{
+    width:100%;
+}
+
 
 
 .dropdown_menu::-webkit-scrollbar{
@@ -477,17 +481,26 @@ option{
     display: none;
 }
 
-@media (min-width:550px) {
-    .filters-container {
-        width:100%;
-    }
+.filters-container{
+    border: 1px solid yellow;
+
+    
 }
+
+.mobile-filters-container{
+    border: 1px solid orange;
+
+}
+
 
 .filter-type{
     margin-bottom: 1rem;
     padding: 1.5rem;
     background-color: var(--category);
     border-radius: 1rem;;
+    min-width:100%;
+    /* width:100%; */
+    /* border: 1px solid yellow; */
     
 }
 
@@ -502,20 +515,16 @@ option{
 }
 
 
-@media (max-width:550px){
+@media (min-width:550px){
     .filter-type {
         margin-top: 1.5rem;
         padding: 1rem;
-        width:100%;
-    }
+        width:100%; 
+        min-width: max-content;    }
     .filter-type h4{
         font-size: 1.8rem;
     }
 }
-
-
-
-
 
 .filters{
     display:flex;
@@ -532,6 +541,10 @@ option{
 
 .filters input:hover{
     /* margin-right: .75rem; */
+}
+
+.range{
+    margin-top: 2rem;
 }
 
 

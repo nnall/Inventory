@@ -96,6 +96,7 @@ const Filter = ({ setResults }) => {
       setSelectedDownPayments(values);
       setRangeSliderChanged(true);
     }
+    // document.getElementById("react-select-6-input").focus();
   };
 
   function locationTrans(location) {
@@ -124,6 +125,12 @@ const Filter = ({ setResults }) => {
     selectedDownPayments,
   ]);
 
+  // making multiValue elements disappear with clearFilters
+  const selectMakeRef = useRef(null);
+  const selectYearRef = useRef(null);
+  const selectColorRef = useRef(null);
+  const selectLocationRef = useRef(null);
+
   const clearFilters = () => {
     // a function to uncheck all filters, clear searchbar, reset down payment
     setSelectedMakes([]);
@@ -134,6 +141,14 @@ const Filter = ({ setResults }) => {
 
     document.getElementById("searchInput").value = ""; // Assuming your search input has an id of "searchInput"
     document.getElementById("customRange").value = max; // Assuming your range slider has an id of "customRange" and "max" is the maximum value
+
+    const selectInputs = [
+      selectMakeRef,
+      selectYearRef,
+      selectColorRef,
+      selectLocationRef,
+    ];
+
     const checkboxes = document.querySelectorAll(".checkboxes input"); // Assuming your checkboxes have a common class of "checkboxes"
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false;
@@ -177,11 +192,6 @@ const Filter = ({ setResults }) => {
     selectedDownPayments,
   ]);
 
-  // function selectedOptions(option) {}
-
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedValues, setSelectedValues] = useState({});
-
   //  Convert makeArray to usable  object for <Select>
 
   const makeArraySelect = makeArray.map((value) => ({ value, label: value }));
@@ -195,19 +205,20 @@ const Filter = ({ setResults }) => {
   // const [selectedOptions, setSelectedOptions] = useState([]);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
-  const handleMenuOpen = () => {
-    setMenuIsOpen(true);
-  };
+  // const handleMenuOpen = () => {
+  //   setMenuIsOpen(true);
+  // };
 
-  const handleMenuClose = () => {
-    setMenuIsOpen(true);
-  };
+  // const handleMenuClose = () => {
+  //   setMenuIsOpen(false);
+  // };
 
   if (isSmallScreen) {
     return (
-      <>
+      <div className="mobile-filters-container">
         <Select
-          onMenuClose={handleMenuClose}
+          // menuIsOpen={true}
+
           placeholder="MAKE"
           isMulti
           className="select selectMake"
@@ -247,13 +258,15 @@ const Filter = ({ setResults }) => {
             const selectedValues = selectedOptions.map(
               (option) => option.value
             );
+
             handleChange("make", selectedValues);
-            setMenuIsOpen(true);
           }}
+          // onMenuOpen={}
+          // onMenuClose={}
+          // menuIsOpen={menuIsOpen}
         ></Select>
 
         <Select
-          closeMenuOnSelect={false}
           placeholder="YEAR"
           isMulti
           className="select selectYear"
@@ -297,6 +310,7 @@ const Filter = ({ setResults }) => {
             console.log(selectedValues);
             handleChange("year", selectedValues);
           }}
+          closeMenuOnSelect={false}
         ></Select>
         <Select
           closeMenuOnSelect={false}
@@ -391,7 +405,7 @@ const Filter = ({ setResults }) => {
           }}
         ></Select>
 
-        <div className="filter-type">
+        <div className="filter-type range">
           <h4>Down Payment</h4>
           <MDBRange
             min={min}
@@ -408,7 +422,7 @@ const Filter = ({ setResults }) => {
         <div className="clear-filters-button">
           <button onClick={clearFilters}>Clear Filters</button>
         </div>
-      </>
+      </div>
     );
   }
   //   ELSE RETURN THIS DESKTOP VERSION OF FILTERS-CONTAINER

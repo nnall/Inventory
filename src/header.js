@@ -17,17 +17,12 @@ const Header = ({ setResults }) => {
 
   const svgRef = useRef(null);
 
+  // keep dropdown open after selecting option
+  const filterContainerRef = useRef(null);
+
   carList.forEach((car, i) => {
     car.id = i + 1;
   });
-
-  useEffect(() => {
-    fetchData();
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   const apiUrl =
     "http://localhost:8080/https://holmesmotors.com/api/inventory/feed?key=hs78ki34ERs";
@@ -48,18 +43,9 @@ const Header = ({ setResults }) => {
     // setMenuButtonActive(true);
   };
 
-  const handleClickOutside = (event) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target) &&
-      !event.target.classList.contains("menu-btn") &&
-      !event.target.classList.contains("menu-trigger")
-    ) {
-      setMenu(false);
-    }
-  };
-
   useEffect(() => {
+    fetchData();
+
     const handleSvgClick = (event) => {
       if (svgRef.current && svgRef.current.contains(event.target)) {
         if (menu) {
@@ -70,14 +56,43 @@ const Header = ({ setResults }) => {
       }
     };
 
-    svgRef.current.addEventListener("click", handleSvgClick);
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !event.target.classList.contains("menu-btn") &&
+        !(
+          (
+            filterContainerRef.current?.contains(event.target) &&
+            !event.target.classList.contains("select")
+          )
+          // filterContainerRef.current.contains(event.target)
+        )
+        // !dropdownRef.current.contains(event.target) &&
+        // !event.target.classList.contains("menu-btn")
+      ) {
+        return;
+      }
 
-    // document.addEventListener("click", handleSvgClick);
-
-    return () => {
-      svgRef.current.removeEventListener("click", handleSvgClick);
+      setMenu(false);
     };
+
+    // svgRef.current.addEventListener("click", handleSvgClick);
+    // document.addEventListener("click", handleClickOutside);
+    // return () => {
+    //   svgRef.current.removeEventListener("click", handleSvgClick);
+    //   document.removeEventListener("click", handleClickOutside);
+    // };
   }, []);
+
+  // useEffect(() => {
+
+  //   // document.addEventListener("click", handleSvgClick);
+
+  //   return () => {
+  //     svgRef.current.removeEventListener("click", handleSvgClick);
+  //   };
+  // }, []);
 
   const menuButtonStyle = {
     transform: menu || menuButtonActive ? "scale(1.1)" : "scale(1)",
@@ -132,7 +147,10 @@ const Header = ({ setResults }) => {
         ref={dropdownRef}
       >
         <Searchbar setResults={setResults} />
-        <Filter setResults={setResults} />
+
+        <div ref={filterContainerRef}>
+          <Filter setResults={setResults} />
+        </div>
       </div>
 
       {/* <div
